@@ -2,8 +2,6 @@ name: terraform workflows
 
 on:
   push:
-    branches:
-      - *
 
   pull_request:
     branches:
