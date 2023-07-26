@@ -14,8 +14,8 @@ on:
 jobs:
   Scan:
     if: ${{ github.event_name == 'push' }}
-    uses: cumberland-cloud/workflows/.github/workflows/tf-scan.yaml@master
+    uses: cumberland-cloud/workflows/.github/workflows/tf_scan.yaml@master
 
   Lint: 
     if: ${{ github.event_name == 'push' }}
-    uses: cumberland-cloud/workflows/.github/workflows/tf-lint.yaml@master
+    uses: cumberland-cloud/workflows/.github/workflows/tf_lint.yaml@master
