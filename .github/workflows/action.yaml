@@ -3,8 +3,7 @@ name: terraform workflows
 on:
   push:
     branches:
-      - feature/**
-      - hotfix/**
+      - *
 
   pull_request:
     branches:
