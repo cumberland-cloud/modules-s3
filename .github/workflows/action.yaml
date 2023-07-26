@@ -2,23 +2,17 @@ name: terraform workflows
 
 on:
   push:
-    branches:
-      - feature/**
-      - hotfix/**
-
   pull_request:
     branches:
       - dev
       - master
       - main
-
   workflow_dispatch:
 
 jobs:
   Scan:
     if: ${{ github.event_name == 'push' }}
-    uses: TODO/workflows/.github/workflows/tf-scan.yml@main
-
+    uses: cumberland-cloud/workflows/.github/workflows/tf-scan.yaml@master
   Lint:
     if: ${{ github.event_name == 'push' }}
-    uses: TODO/workflows/.github/workflows/tf-lint.yml@main
+    uses: cumberland-cloud/workflows/.github/workflows/tf-lint.yaml@master
