@@ -2,7 +2,25 @@
 resource "aws_s3_bucket" "this" {
     count                       = local.total_buckets
 
-    bucket                      = "${var.bucket.name}-00${count.index}"
+    bucket                      = count.index == 0 ? (
+                                    var.bucket.name
+                                ) : (
+                                    "${var.bucket.name}-replica-0${count.index}"
+                                )
+    
+    lifecycle {
+        prevent_destroy         = true
+    }
+
+    dynamic "logging" {
+        for_each                = count.index == 0 ? toset(["logs"]) : toset([])
+
+        content {
+            target_bucket       = aws_s3_bucket.logs.id
+            target_prefix       = "log/"
+        }
+    }
+
 }
 
 resource "aws_s3_bucket_policy" "this" {
@@ -44,7 +62,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
     }
 }
 
-resource "aws_s3_bucket_versioning" "state" {
+resource "aws_s3_bucket_versioning" "this" {
     count                       = local.total_buckets
 
     bucket                      = aws_s3_bucket.this[count.index].id
@@ -54,11 +72,13 @@ resource "aws_s3_bucket_versioning" "state" {
     }
 }
 
-resource "aws_s3_bucket_policy" "this" {
-    count                       = local.total_buckets
+resource "aws_s3_bucket_notification" "this" {
+  bucket                        = aws_s3_bucket.this[0].id
 
-    bucket                      = aws_s3_bucket.this[count.index].id
-    policy                      = local.policy_configuration.json
+  topic {
+    topic_arn                   = aws_sns_topic.this.arn
+    events                      = var.bucket.notification_events
+  }
 }
 
 resource "aws_s3_bucket_replication_configuration" "replication" {
@@ -92,4 +112,9 @@ resource "aws_iam_policy" "this" {
 resource "aws_iam_role_policy_attachment" "this" {
     role                        = var.replication_role.name
     policy_arn                  = aws_iam_policy.this.arn
+}
+
+resource "aws_sns_topic" "this" {
+  name                          = local.event_notification_id
+  policy                        = data.aws_iam_policy_document.notification.json
 }
