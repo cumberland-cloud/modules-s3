@@ -115,6 +115,7 @@ resource "aws_iam_role_policy_attachment" "this" {
 }
 
 resource "aws_sns_topic" "this" {
+  kms_master_key_id             = local.encryption_configuration.alias_arn
   name                          = local.event_notification_id
   policy                        = data.aws_iam_policy_document.notification.json
 }
