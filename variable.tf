@@ -1,4 +1,4 @@
-varible "bucket" {
+variable "bucket" {
     description     = <<EOT
     S3 Bucket configuration object. 
     
