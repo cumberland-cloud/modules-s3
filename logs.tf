@@ -7,15 +7,13 @@ resource "aws_s3_bucket" "logs" {
 
 }
 
-resource "aws_s3_bucket_policy" "this" {
+resource "aws_s3_bucket_policy" "logs" {
     bucket                      = aws_s3_bucket.logs.id
     policy                      = local.policy_configuration.json
 }
 
-resource "aws_s3_bucket_public_access_block" "this" {
-    count                       = local.total_buckets
-
-    bucket                      = aws_s3_bucket.this[count.index].id
+resource "aws_s3_bucket_public_access_block" "logs" {
+    bucket                      = aws_s3_bucket.logs.id
     block_public_acls           = true
     block_public_policy         = true
     ignore_public_acls          = true
@@ -23,8 +21,6 @@ resource "aws_s3_bucket_public_access_block" "this" {
 }
 
 resource "aws_s3_bucket_acl" "this" {
-    count                       = local.total_buckets
-
     bucket                      = aws_s3_bucket.logs.id
     acl                         = "log-delivery-write"
     expected_bucket_owner       = "BucketOwnerEnforced"
@@ -35,5 +31,17 @@ resource "aws_s3_bucket_versioning" "this" {
 
     versioning_configuration {
         status                  = "Enabled"
+    }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
+    bucket                      = aws_s3_bucket.logs.id
+    expected_bucket_owner       = "BucketOwnerEnforced"
+
+    rule {
+        apply_server_side_encryption_by_default {
+            kms_master_key_id   = local.encryption_configuration.arn
+            sse_algorithm       = "aws:kms"
+        }
     }
 }
