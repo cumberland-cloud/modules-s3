@@ -1,5 +1,3 @@
-data "aws_caller_identity" "current" {}
-
 data "aws_iam_policy_document" "merged" {
     count                   = local.conditions.merge_policies ? 1 : 0
 
