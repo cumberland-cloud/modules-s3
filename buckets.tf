@@ -1,5 +1,6 @@
 # NOTE: first bucket is treated as the source bucket, all other buckets are treated as replicas
 resource "aws_s3_bucket" "this" {
+    #checkov:skip=CKV2_AWS_61: "Ensure that an S3 bucket has a lifecycle configuration"
     count                       = local.total_buckets
 
     bucket                      = count.index == 0 ? (

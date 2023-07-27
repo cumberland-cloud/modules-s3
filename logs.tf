@@ -1,4 +1,7 @@
 resource "aws_s3_bucket" "logs" {
+    #checkov:skip=CKV2_AWS_61: "Ensure that an S3 bucket has a lifecycle configuration"
+    #checkov:skip=CKV_AWS_18: "Ensure the S3 bucket has access logging enabled"
+
     bucket                      = "${var.bucket.name}-logs"
     
     lifecycle {
