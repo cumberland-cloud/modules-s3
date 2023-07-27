@@ -104,14 +104,14 @@ data "aws_iam_policy_document" "notification" {
   statement {
     effect                  = "Allow"
     actions                 = [ "sns:Publish"]
-    resources               = [ local.local.event_notification_arn ]
+    resources               = [ local.event_notification_arn ]
 
     condition {
       test                  = "ArnLike"
       variable              = "aws:SourceArn"
       values                = aws_s3_bucket.this[0].arn
     }
-    
+
     principals {
       type                  = "*"
       identifiers           = [ "*" ]
