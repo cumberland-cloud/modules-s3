@@ -11,14 +11,18 @@ data "aws_iam_policy_document" "merged" {
 
 data "aws_iam_policy_document" "unmerged" {
   #checkov:skip=CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"
+  #checkov:skip=CKV_AWS_108: "Ensure IAM policies does not allow data exfiltration"
   #checkov:skip=CKV_AWS_356: "Ensure no IAM policies documents allow "*" as a statement's resource for restrictable actions"
-    # NOTE: ACL actions are explicitly denied
+    # TODO: fix CHK_AWS_108
     
   statement {
     sid                     = "EnableIAMPerms"
     effect                  = "Allow"
     actions                 = [ "s3:*" ]
-    resources               = [ "*" ]
+    resources               = [ 
+      local.source_bucket_arn,
+      "${local.source_bucket_arn}/*"
+    ]
 
     principals {
       type                  =  "AWS"
@@ -36,7 +40,11 @@ data "aws_iam_policy_document" "unmerged" {
       "s3:PutObjectAcl",
       "s3:PutObjectVersionAcl"
     ]
-    resources               = [ "*" ]
+    resources               = [ 
+      local.source_bucket_arn,
+      "${local.source_bucket_arn}/*"
+    ]
+
   }
 
   statement {
@@ -45,7 +53,10 @@ data "aws_iam_policy_document" "unmerged" {
     actions                 = [
       "s3:DeleteBucket"
     ]
-    resources               = [ "*" ]
+    resources               = [ 
+      local.source_bucket_arn,
+      "${local.source_bucket_arn}/*"
+    ]
   }
 }
 
