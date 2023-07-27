@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 data "aws_iam_policy_document" "merged" {
     count                   = local.conditions.merge_policies ? 1 : 0
 
@@ -8,6 +10,10 @@ data "aws_iam_policy_document" "merged" {
 }
 
 data "aws_iam_policy_document" "unmerged" {
+  #checkov:skip=CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"
+  #checkov:skip=CKV_AWS_356: "Ensure no IAM policies documents allow "*" as a statement's resource for restrictable actions"
+    # NOTE: ACL actions are explicitly denied
+    
   statement {
     sid                     = "EnableIAMPerms"
     effect                  = "Allow"
@@ -17,7 +23,7 @@ data "aws_iam_policy_document" "unmerged" {
     principals {
       type                  =  "AWS"
       identifiers           = [
-        "arn:aws:iam::${data.aws_caller_identity.account_id}:root"
+        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
       ]
     }
   }
@@ -51,6 +57,12 @@ data "aws_iam_policy_document" "replication" {
       "s3:ListBucket"
     ]
     resources               = [ local.source_bucket_arn ]
+
+    condition {
+      test                  = "StringEquals"
+      variable              = "aws:SourceAccount"
+      values                = [ data.aws_caller_identity.current.account_id ]
+    }
   }
 
   statement {
@@ -61,6 +73,12 @@ data "aws_iam_policy_document" "replication" {
       "s3:GetObjectVersionTagging"
     ]
     resources               = ["${local.local.source_bucket_arn}/*"]
+
+    condition {
+      test                  = "StringEquals"
+      variable              = "aws:SourceAccount"
+      values                = [ data.aws_caller_identity.current.account_id ]
+    }
   }
 
   statement {
@@ -71,5 +89,11 @@ data "aws_iam_policy_document" "replication" {
       "s3:ReplicateTags"
     ]
     resources = local.destination_bucket_arns
+    
+    condition {
+      test                  = "StringEquals"
+      variable              = "aws:SourceAccount"
+      values                = [ data.aws_caller_identity.current.account_id ]
+    }
   }
 }
