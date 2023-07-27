@@ -44,3 +44,34 @@ data "aws_iam_policy_document" "unmerged" {
     resources               = [ "*" ]
   }
 }
+
+data "aws_iam_policy_document" "replication" {
+  statement {
+    effect                  = "Allow"
+    actions                 = [
+      "s3:GetReplicationConfiguration",
+      "s3:ListBucket"
+    ]
+    resources               = [ local.local.source_bucket_arn ]
+  }
+
+  statement {
+    effect                  = "Allow"
+    actions                 = [
+      "s3:GetObjectVersionForReplication",
+      "s3:GetObjectVersionAcl",
+      "s3:GetObjectVersionTagging"
+    ]
+    resources               = ["${local.local.source_bucket_arn}/*"]
+  }
+
+  statement {
+    effect                  = "Allow"
+    actions                 = [
+      "s3:ReplicateObject",
+      "s3:ReplicateDelete",
+      "s3:ReplicateTags"
+    ]
+    resources = local.destination_bucket_arns
+  }
+}

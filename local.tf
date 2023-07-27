@@ -1,5 +1,11 @@
 locals {
     # Constants
+    total_buckets                   = var.bucket.replicas + 1
+    source_bucket_arn               = "arn:aws:s3:::${var.bucket.name}-000"
+    destination_bucket_arns         = [ 
+        for i in range(1, total_buckets): 
+            "arn:aws:s3:::${var.bucket.name}-00${i}/*" 
+    ]
     # Calculations
     conditions                      = {
         merge_policies              = var.bucket.policy != null
