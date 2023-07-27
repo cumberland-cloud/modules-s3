@@ -1,7 +1,7 @@
 data "aws_caller_identity" "current" {}
 
 data "aws_iam_policy_document" "merged" {
-    count                   = local.merge ? 1 : 0
+    count                   = local.conditions.merge_policies ? 1 : 0
 
     source_policy_documents = [
         aws_iam_policy_document.unmerged.json,
@@ -31,6 +31,15 @@ data "aws_iam_policy_document" "unmerged" {
       "s3:PutBucketAcl",
       "s3:PutObjectAcl",
       "s3:PutObjectVersionAcl"
+    ]
+    resources               = [ "*" ]
+  }
+
+  statement {
+    sid                     = "DenyDeleteActions"
+    effect                  = "Deny"
+    actions                 = [
+      "s3:DeleteBucket"
     ]
     resources               = [ "*" ]
   }
