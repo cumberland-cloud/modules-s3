@@ -1,0 +1,24 @@
+# Terraform Docs
+
+<!-- BEGIN_TF_DOCS -->
+
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_kms"></a> [kms](#module\_kms) | https://github.com/cumberland-cloud/modules-kms.git | 8842d57 |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_bucket"></a> [bucket](#input\_bucket) | S3 Bucket configuration object. <br>    <br>    KMS key: If no KMS key is specified for the encryption of resources, one will be provisioned. If using a pre-existing bucket, the key output from the KMS module should be passed in under the `key` object.<br><br>    Policy: Policy should be a JSON string. By default, a policy is generated that allows all users in the caller AWS account READ/WRITE access, with the exception of ACL operations, i.e. all ACL operations are explicitly denied. Any additional permissions passed in through the `policy` will be merged into the default policy through a `aws_iam_policy_document` data block.<br><br>    Replicas: Number of replicas to create. The original bucket will receive `var.bucket.name` as its name, and each replica will receive the name `var.bucket.name-replica-0<var.bucket.replicas>`. | <pre>object({<br>        name                    = string<br>        acl                     = optional(string, "private")<br>        key                     = optional(string, null)<br>        notification_events     = optional(list(string), [<br>                                    "s3:ObjectCreated:*",<br>                                    "s3:ObjectRemoved:*"<br>                                ])<br>        policy                  = optional(string, null)<br>        replicas                = optional(number, 1)<br>    })</pre> | n/a | yes |
+| <a name="input_replication_role"></a> [replication\_role](#input\_replication\_role) | ARN of the replication role. This role will have a policy attached to it that will enabled s3 replication. The service principal in the trust relationship must be `s3.amazonaws.com`. The `s3_replicator` key of the IAM module `service_roles` output can be passed directly into this argument. | <pre>object({<br>        arn                     = string<br>        id                      = string<br>        name                    = string <br>    })</pre> | <pre>{<br>  "arn": "arn:aws:iam::<account-id>:role/s3-replicator",<br>  "id": "s3-replicator",<br>  "name": "s3-replicator"<br>}</pre> | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_bucket"></a> [bucket](#output\_bucket) | Map containing metadata for the source S3 bucket and its replicas. The smallest index/key of the map will always be the source bucket, the next largest will be the logging bucket and the rest will be replicas of the source bucket. |
+<!-- END_TF_DOCS -->  
