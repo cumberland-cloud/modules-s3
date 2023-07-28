@@ -1,5 +1,5 @@
-Welcome to cumberland-cloud/src's documentation!
-================================================
+Welcome to cumberland-cloud/modules/s3's documentation!
+=======================================================
 
 .. toctree::
    :maxdepth: 2

@@ -7,8 +7,8 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 # NOTE: Add your project's information here.
-project = 'Cumberland CLoud'
-copyright = '2022'
+project = 'Cumberland Cloud'
+copyright = '2023'
 author = 'Grant Moore'
 release = '1.0.0'
 
@@ -60,7 +60,7 @@ html_theme = 'sphinx_material'
 html_theme_options = {
 
     # Set the name of the project to appear in the navigation.
-    'nav_title': 'Source Code',
+    'nav_title': 'Modules: S3',
 
     # Set you GA account ID to enable tracking
     'google_analytics_account': 'UA-XXXXX',
@@ -74,8 +74,8 @@ html_theme_options = {
     'color_accent': 'light-blue',
 
     # Set the repo location to get a badge with stats
-    'repo_url': 'TODO',
-    'repo_name': 'TODO',
+    'repo_url': 'https://github.com/cumberland-cloud/modules-s3',
+    'repo_name': 'modules-s3',
 
     # Visible levels of the global TOC; -1 means unlimited
     'globaltoc_depth': 2,
