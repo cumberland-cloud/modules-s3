@@ -1,4 +1,4 @@
-# cumberland-cloud/modules/lambda pull request
+# cumberland-cloud/modules/s3 pull request
 
 ## Status Checks
 
