@@ -25,7 +25,7 @@ resource "aws_s3_bucket_acl" "logs" {
     expected_bucket_owner       = data.aws_caller_identity.current.account_id
 }
 
-resource "aws_s3_bucket_ownership_controls" "this" {
+resource "aws_s3_bucket_ownership_controls" "logs" {
     bucket                      = aws_s3_bucket.logs.id
 
     rule {
