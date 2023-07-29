@@ -19,7 +19,6 @@ locals {
                                     ) : (
                                         var.bucket.key
                                     )
-    logging_configuration           = count.index == 0 ? toset(["logs"]) : toset([])
     policy_configuration            = local.conditions.merge_policies ? (
                                         data.aws_iam_policy_document.merged[0]
                                     ) : ( 
