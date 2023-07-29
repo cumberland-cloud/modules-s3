@@ -1,10 +1,5 @@
 formatter: "markdown table"
 
-sections:
-  hide:
-    - resources
-    - requirements
-
 recursive:
   enabled: true
   path: modules
