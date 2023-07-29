@@ -1,4 +1,4 @@
-module "kms" {
+module "key" {
     #checkov:skip=CKV_TF_1: "Ensure Terraform module sources use a commit hash"
 
     count           = local.conditions.provision_key ? 1 : 0

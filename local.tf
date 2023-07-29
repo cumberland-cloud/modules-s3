@@ -15,7 +15,7 @@ locals {
     }
     # Configurations
     encryption_configuration        = local.conditions.provision_key ? (
-                                        module.kms[0].key 
+                                        module.key[0].key 
                                     ) : (
                                         var.bucket.key
                                     )
