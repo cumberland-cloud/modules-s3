@@ -60,14 +60,14 @@ html_theme = 'sphinx_material'
 html_theme_options = {
 
     # Set the name of the project to appear in the navigation.
-    'nav_title': 'Modules: S3',
+    'nav_title': 'Module: S3',
 
     # Set you GA account ID to enable tracking
     'google_analytics_account': 'UA-XXXXX',
 
     # Specify a base_url used to generate sitemap.xml. If not
     # specified, then no sitemap will be built.
-    'base_url': 'TODO',
+    'base_url': 'https://cumberland-cloud.github.io/modules-ecr/',
 
     # Set the color and the accent color
     'color_primary': 'blue',
@@ -76,6 +76,7 @@ html_theme_options = {
     # Set the repo location to get a badge with stats
     'repo_url': 'https://github.com/cumberland-cloud/modules-s3',
     'repo_name': 'modules-s3',
+
 
     # Visible levels of the global TOC; -1 means unlimited
     'globaltoc_depth': 2,
