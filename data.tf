@@ -109,7 +109,7 @@ data "aws_iam_policy_document" "notification" {
     condition {
       test                  = "ArnLike"
       variable              = "aws:SourceArn"
-      values                = aws_s3_bucket.this[0].arn
+      values                = [ aws_s3_bucket.this[0].arn ] 
     }
 
     principals {

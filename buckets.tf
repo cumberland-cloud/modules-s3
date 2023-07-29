@@ -104,7 +104,7 @@ resource "aws_s3_bucket_replication_configuration" "replication" {
             }
             
             content {
-                bucket          = destination.arn
+                bucket          = destination.value["arn"]
                 storage_class   = "STANDARD"
             }
         }
