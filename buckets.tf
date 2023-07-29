@@ -14,7 +14,7 @@ resource "aws_s3_bucket" "this" {
     }
 
     dynamic "logging" {
-        for_each                = count.index == 0 ? toset(["logs"]) : toset([])
+        for_each                = local.logging_configuration
 
         content {
             target_bucket       = aws_s3_bucket.logs.id
@@ -46,7 +46,11 @@ resource "aws_s3_bucket_acl" "this" {
 
     bucket                      = aws_s3_bucket.this[count.index].id
     acl                         = var.bucket.acl
-    expected_bucket_owner       = "BucketOwnerEnforced"
+    expected_bucket_owner       = data.aws_caller_identity.current.account_id
+
+    rule {
+        object_ownership        = "BucketOwnerPreferred"
+    }
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "this" {

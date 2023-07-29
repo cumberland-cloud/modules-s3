@@ -5,6 +5,6 @@ module "key" {
     source          = "github.com/cumberland-cloud/modules-kms.git?ref=v1.0.0"
 
     key             = {
-        alias       = "${local.name}-s3"
+        alias       = "${var.bucket.name}-s3"
     }
 }

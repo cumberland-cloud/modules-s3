@@ -3,8 +3,8 @@ locals {
     total_buckets                   = var.bucket.replicas + 1
     source_bucket_arn               = "arn:aws:s3:::${var.bucket.name}"
     destination_bucket_arns         = [ 
-        for i in range(1, total_buckets): 
-            "arn:aws:s3:::${var.bucket.name}-replica-0${i-1}/*" 
+        for i in range(1, local.total_buckets): 
+            "arn:aws:s3:::${var.bucket.name}-replica-0${i - 1}/*" 
     ]
     event_notification_id           = "${var.bucket.name}-notifications"
     event_notification_arn          = "arn:aws:sns:*:*:${local.event_notification_id}"
@@ -19,6 +19,7 @@ locals {
                                     ) : (
                                         var.bucket.key
                                     )
+    logging_configuration           = count.index == 0 ? toset(["logs"]) : toset([])
     policy_configuration            = local.conditions.merge_policies ? (
                                         data.aws_iam_policy_document.merged[0]
                                     ) : ( 

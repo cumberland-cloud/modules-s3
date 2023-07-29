@@ -4,7 +4,7 @@ data "aws_iam_policy_document" "merged" {
     count                   = local.conditions.merge_policies ? 1 : 0
 
     source_policy_documents = [
-        aws_iam_policy_document.unmerged.json,
+        data.aws_iam_policy_document.unmerged.json,
         var.bucket.policy
     ]
 }
