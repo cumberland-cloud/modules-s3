@@ -74,7 +74,7 @@ data "aws_iam_policy_document" "replication" {
       "s3:GetObjectVersionAcl",
       "s3:GetObjectVersionTagging"
     ]
-    resources               = ["${local.local.source_bucket_arn}/*"]
+    resources               = ["${local.source_bucket_arn}/*"]
 
     condition {
       test                  = "StringEquals"

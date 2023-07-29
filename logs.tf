@@ -22,7 +22,11 @@ resource "aws_s3_bucket_public_access_block" "logs" {
 resource "aws_s3_bucket_acl" "logs" {
     bucket                      = aws_s3_bucket.logs.id
     acl                         = "log-delivery-write"
-    expected_bucket_owner       = "BucketOwnerEnforced"
+    expected_bucket_owner       = data.aws_caller_identity.current.account_id
+
+    rule {
+        object_ownership        = "BucketOwnerPreferred"
+    }
 }
 
 resource "aws_s3_bucket_versioning" "logs" {
@@ -35,7 +39,7 @@ resource "aws_s3_bucket_versioning" "logs" {
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "logs" {
     bucket                      = aws_s3_bucket.logs.id
-    expected_bucket_owner       = "BucketOwnerEnforced"
+    expected_bucket_owner       = data.aws_caller_identity.current.account_id
 
     rule {
         apply_server_side_encryption_by_default {

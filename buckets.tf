@@ -13,13 +13,9 @@ resource "aws_s3_bucket" "this" {
         prevent_destroy         = true
     }
 
-    dynamic "logging" {
-        for_each                = local.logging_configuration
-
-        content {
-            target_bucket       = aws_s3_bucket.logs.id
-            target_prefix       = "log/"
-        }
+    logging {
+        target_bucket           = aws_s3_bucket.logs.id
+        target_prefix           = "log/${count.index}"
     }
 
 }
@@ -57,7 +53,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
     count                       = local.total_buckets
 
     bucket                      = aws_s3_bucket.this[count.index].id
-    expected_bucket_owner       = "BucketOwnerEnforced"
+    expected_bucket_owner       = data.aws_caller_identity.current.account_id
 
     rule {
         apply_server_side_encryption_by_default {
