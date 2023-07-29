@@ -12,7 +12,11 @@ variable "bucket" {
     type                        = object({
         name                    = string
         acl                     = optional(string, "private")
-        key                     = optional(string, null)
+        key                     = optional(object({
+            id                  = string
+            arn                 = string
+            alias_arn           = string
+        }), null)
         notification_events     = optional(list(string), [
                                     "s3:ObjectCreated:*",
                                     "s3:ObjectRemoved:*"
