@@ -23,11 +23,16 @@ resource "aws_s3_bucket_acl" "logs" {
     bucket                      = aws_s3_bucket.logs.id
     acl                         = "log-delivery-write"
     expected_bucket_owner       = data.aws_caller_identity.current.account_id
+}
+
+resource "aws_s3_bucket_ownership_controls" "this" {
+    bucket                      = aws_s3_bucket.logs.id
 
     rule {
         object_ownership        = "BucketOwnerPreferred"
     }
 }
+
 
 resource "aws_s3_bucket_versioning" "logs" {
     bucket                      = aws_s3_bucket.logs.id

@@ -37,16 +37,22 @@ resource "aws_s3_bucket_public_access_block" "this" {
     restrict_public_buckets     = true
 }
 
+resource "aws_s3_bucket_ownership_controls" "this" {
+    count                       = local.total_buckets
+
+    bucket                      = aws_s3_bucket.this[count.index].id
+
+    rule {
+        object_ownership        = "BucketOwnerPreferred"
+    }
+}
+
 resource "aws_s3_bucket_acl" "this" {
     count                       = local.total_buckets
 
     bucket                      = aws_s3_bucket.this[count.index].id
     acl                         = var.bucket.acl
     expected_bucket_owner       = data.aws_caller_identity.current.account_id
-
-    rule {
-        object_ownership        = "BucketOwnerPreferred"
-    }
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
