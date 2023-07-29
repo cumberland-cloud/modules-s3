@@ -20,8 +20,8 @@ resource "aws_s3_bucket_public_access_block" "logs" {
 }
 
 resource "aws_s3_bucket_acl" "logs" {
-    depends_on                  = [ aws_s3_bucket_ownership_controls.log ]
-    
+    depends_on                  = [ aws_s3_bucket_ownership_controls.logs ]
+
     bucket                      = aws_s3_bucket.logs.id
     acl                         = "log-delivery-write"
     expected_bucket_owner       = data.aws_caller_identity.current.account_id
