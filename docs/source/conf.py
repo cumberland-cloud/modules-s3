@@ -67,7 +67,7 @@ html_theme_options = {
 
     # Specify a base_url used to generate sitemap.xml. If not
     # specified, then no sitemap will be built.
-    'base_url': 'https://cumberland-cloud.github.io/modules-ecr/',
+    'base_url': 'https://cumberland-cloud.github.io/modules-s3/',
 
     # Set the color and the accent color
     'color_primary': 'blue',

@@ -2,9 +2,10 @@
 
 [![terraform workflows](https://github.com/cumberland-cloud/modules-s3/actions/workflows/action.yaml/badge.svg)](https://github.com/cumberland-cloud/modules-s3/actions/workflows/action.yaml)
 
+[![pages-build-deployment](https://github.com/cumberland-cloud/modules-s3/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/cumberland-cloud/modules-s3/actions/workflows/pages/pages-build-deployment)
 A Terraform module for deploying a secure S3 bucket and associated resources.
 
-Refer to [hosted docs]() for more information regarding this module.
+Refer to [hosted docs](https://cumberland-cloud.github.io/modules-s3/) for more information regarding this module.
 
 ## Important
 
