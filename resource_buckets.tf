@@ -1,6 +1,7 @@
 # NOTE: first bucket is treated as the source bucket, all other buckets are treated as replicas
 resource "aws_s3_bucket" "this" {
     #checkov:skip=CKV2_AWS_61: "Ensure that an S3 bucket has a lifecycle configuration"
+
     count                       = local.total_buckets
 
     bucket                      = count.index == 0 ? (
@@ -109,20 +110,4 @@ resource "aws_s3_bucket_replication_configuration" "replication" {
             }
         }
     }
-}
-
-resource "aws_iam_policy" "this" {
-    name                        = "${var.bucket.name}-s3-replication-policy"
-    policy                      = data.aws_iam_policy_document.replication.json
-}
-
-resource "aws_iam_role_policy_attachment" "this" {
-    role                        = var.replication_role.name
-    policy_arn                  = aws_iam_policy.this.arn
-}
-
-resource "aws_sns_topic" "this" {
-  kms_master_key_id             = local.encryption_configuration.alias_arn
-  name                          = local.event_notification_id
-  policy                        = data.aws_iam_policy_document.notification.json
 }
