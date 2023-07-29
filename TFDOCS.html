@@ -104,7 +104,7 @@
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">Modules: S3</span>
+          <span class="md-header-nav__topic">Module: S3</span>
           <span class="md-header-nav__topic"> Terraform Docs </span>
         </div>
       </div>
@@ -196,7 +196,7 @@
       
     </a>
     <a href="index.html"
-       title="Cumberland Cloud 1.0.0 documentation">Modules: S3</a>
+       title="Cumberland Cloud 1.0.0 documentation">Module: S3</a>
   </label>
     <div class="md-nav__source">
       <a href="https://github.com/cumberland-cloud/modules-s3" title="Go to repository" class="md-source" data-md-source="github">
@@ -283,7 +283,7 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p><a name="input_bucket"></a> <a class="reference external" href="#input_bucket">bucket</a></p></td>
-<td><p>S3 Bucket configuration object. <br/> <br/>    KMS key: If no KMS key is specified for the encryption of resources, one will be provisioned. If using a pre-existing bucket, the key output from the KMS module should be passed in under the <code class="docutils literal notranslate"><span class="pre">key</span></code> object.<br/><br/>    Policy: Policy should be a JSON string. By default, a policy is generated that allows all users in the caller AWS account READ/WRITE access, with the exception of ACL operations, i.e. all ACL operations are explicitly denied. Any additional permissions passed in through the <code class="docutils literal notranslate"><span class="pre">policy</span></code> will be merged into the default policy through a <code class="docutils literal notranslate"><span class="pre">aws_iam_policy_document</span></code> data block.<br/><br/>    Replicas: Number of replicas to create. The original bucket will receive <code class="docutils literal notranslate"><span class="pre">var.bucket.name</span></code> as its name, and each replica will receive the name <code class="docutils literal notranslate"><span class="pre">var.bucket.name-replica-0&lt;var.bucket.replicas&gt;</span></code>.</p></td>
+<td><p>S3 Bucket configuration object. <br/> <br/>    KMS key: If no KMS key is specified for the encryption of resources, one will be provisioned. If using a pre-existing key, the key output from the KMS module should be passed in under the <code class="docutils literal notranslate"><span class="pre">key</span></code> object.<br/><br/>    Policy: Policy should be a JSON string. By default, a policy is generated that allows all users in the caller AWS account READ/WRITE access, with the exception of ACL operations, i.e. all ACL operations are explicitly denied. Any additional permissions passed in through the <code class="docutils literal notranslate"><span class="pre">policy</span></code> will be merged into the default policy through a <code class="docutils literal notranslate"><span class="pre">aws_iam_policy_document</span></code> data block.<br/><br/>    Replicas: Number of replicas to create. The original bucket will receive <code class="docutils literal notranslate"><span class="pre">var.bucket.name</span></code> as its name, and each replica will receive the name <code class="docutils literal notranslate"><span class="pre">var.bucket.name-replica-0&lt;var.bucket.replicas&gt;</span></code>.</p></td>
 <td><p><pre>object({<br/>        name                    = string<br/>        acl                     = optional(string, “private”)<br/>        key                     = optional(string, null)<br/>        notification_events     = optional(list(string), [<br/>                                    “s3:ObjectCreated:<em>”,<br/>                                    “s3:ObjectRemoved:</em>”<br/>                                ])<br/>        policy                  = optional(string, null)<br/>        replicas                = optional(number, 1)<br/>    })</pre></p></td>
 <td><p>n/a</p></td>
 <td class="text-align:center"><p>yes</p></td>
