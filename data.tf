@@ -39,6 +39,12 @@ data "aws_iam_policy_document" "unmerged" {
     ]
     resources               = [ "${local.source_bucket_arn}*" ]
 
+    principals {
+      type                  =  "AWS"
+      identifiers           = [
+        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+      ]
+    }
   }
 
   statement {
@@ -48,6 +54,13 @@ data "aws_iam_policy_document" "unmerged" {
       "s3:DeleteBucket"
     ]
     resources               = [ "${local.source_bucket_arn}*" ]
+
+    principals {
+      type                  =  "AWS"
+      identifiers           = [
+        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+      ]
+    }
   }
 }
 
