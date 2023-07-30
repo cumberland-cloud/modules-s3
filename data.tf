@@ -25,8 +25,8 @@ data "aws_iam_policy_document" "unmerged" {
                               local.source_bucket_arns 
                             ) : ( 
                               concat(
-                                local.destination_bucket_arns[count.index], 
-                                local.destination_bucket_path_arns[count.index]
+                                local.destination_bucket_arns[count.index - 1], 
+                                local.destination_bucket_path_arns[count.index - 1]
                               )
                             )
 
@@ -51,8 +51,8 @@ data "aws_iam_policy_document" "unmerged" {
                               local.source_bucket_arns 
                             ) : ( 
                               concat(
-                                local.destination_bucket_arns[count.index], 
-                                local.destination_bucket_path_arns[count.index]
+                                local.destination_bucket_arns[count.index - 1], 
+                                local.destination_bucket_path_arns[count.index - 1]
                               )
                             )
 
