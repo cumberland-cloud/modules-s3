@@ -54,7 +54,7 @@ data "aws_iam_policy_document" "replication" {
       "s3:GetReplicationConfiguration",
       "s3:ListBucket"
     ]
-    resources               = [ local.source_bucket_arn ]
+    resources               = local.source_bucket_arns
 
     condition {
       test                  = "StringEquals"
@@ -70,7 +70,7 @@ data "aws_iam_policy_document" "replication" {
       "s3:GetObjectVersionAcl",
       "s3:GetObjectVersionTagging"
     ]
-    resources               = ["${local.source_bucket_arn}/*"]
+    resources               = local.source_bucket_arns
 
     condition {
       test                  = "StringEquals"
@@ -86,7 +86,7 @@ data "aws_iam_policy_document" "replication" {
       "s3:ReplicateDelete",
       "s3:ReplicateTags"
     ]
-    resources = local.destination_bucket_arns
+    resources               = local.destination_bucket_arns
     
     condition {
       test                  = "StringEquals"
