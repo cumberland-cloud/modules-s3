@@ -13,12 +13,6 @@ resource "aws_s3_bucket" "this" {
     lifecycle {
         prevent_destroy         = true
     }
-
-    logging {
-        target_bucket           = aws_s3_bucket.logs.id
-        target_prefix           = "log/${count.index}"
-    }
-
 }
 
 resource "aws_s3_bucket_policy" "this" {
@@ -26,6 +20,14 @@ resource "aws_s3_bucket_policy" "this" {
 
     bucket                      = aws_s3_bucket.this[count.index].id
     policy                      = local.policy_configuration[count.index].json
+}
+
+resource "aws_s3_bucket_logging" "example" {
+    count                       = local.total_buckets
+
+    bucket                      = aws_s3_bucket.this[count.index].id
+    target_bucket               = aws_s3_bucket.logs.id
+    target_prefix               = "log/${count.index == 0 ? "source" : "replica-0${count.index}"}"
 }
 
 resource "aws_s3_bucket_public_access_block" "this" {
