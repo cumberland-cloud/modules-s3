@@ -16,10 +16,10 @@ data "aws_iam_policy_document" "unmerged" {
     # TODO: fix CHK_AWS_108
     
   statement {
-    sid                     = "EnableIAMPerms"
+    sid                     = "EnableActions"
     effect                  = "Allow"
     actions                 = [ "s3:*" ]
-    resources               = [ "${local.source_bucket_arn}*" ]
+    resources               = local.source_bucket_arns
 
     principals {
       type                  =  "AWS"
@@ -30,36 +30,19 @@ data "aws_iam_policy_document" "unmerged" {
   }
 
   statement {
-    sid                     = "DenyACLActions"
+    sid                     = "DenyActions"
     effect                  = "Deny"
     actions                 = [
+      "s3:DeleteBucket",
       "s3:PutBucketAcl",
       "s3:PutObjectAcl",
       "s3:PutObjectVersionAcl"
     ]
-    resources               = [ "${local.source_bucket_arn}*" ]
+    resources               = local.source_bucket_arns
 
     principals {
       type                  =  "AWS"
-      identifiers           = [
-        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
-      ]
-    }
-  }
-
-  statement {
-    sid                     = "DenyDeleteActions"
-    effect                  = "Deny"
-    actions                 = [
-      "s3:DeleteBucket"
-    ]
-    resources               = [ "${local.source_bucket_arn}*" ]
-
-    principals {
-      type                  =  "AWS"
-      identifiers           = [
-        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
-      ]
+      identifiers           = [ "*" ]
     }
   }
 }
