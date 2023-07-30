@@ -1,10 +1,10 @@
 data "aws_caller_identity" "current" {}
 
 data "aws_iam_policy_document" "merged" {
-    count                   = local.conditions.merge_policies ? 1 : 0
+    count                   = local.conditions.merge_policies ? local.total_buckets : 0
 
     source_policy_documents = [
-        data.aws_iam_policy_document.unmerged.json,
+        data.aws_iam_policy_document.unmerged[count.index].json,
         var.bucket.policy
     ]
 }
@@ -14,12 +14,21 @@ data "aws_iam_policy_document" "unmerged" {
   #checkov:skip=CKV_AWS_108: "Ensure IAM policies does not allow data exfiltration"
   #checkov:skip=CKV_AWS_356: "Ensure no IAM policies documents allow "*" as a statement's resource for restrictable actions"
     # TODO: fix CHK_AWS_108
-    
+  count                     = local.total_buckets
+
+
   statement {
     sid                     = "EnableActions"
     effect                  = "Allow"
     actions                 = [ "s3:*" ]
-    resources               = local.source_bucket_arns
+    resources               = count.index == 0 ? (
+                              local.source_bucket_arns 
+                            ) : ( 
+                              concat(
+                                local.destination_bucket_arns[count.index], 
+                                local.destination_bucket_path_arns[count.index]
+                              )
+                            )
 
     principals {
       type                  =  "AWS"
@@ -38,7 +47,14 @@ data "aws_iam_policy_document" "unmerged" {
       "s3:PutObjectAcl",
       "s3:PutObjectVersionAcl"
     ]
-    resources               = local.source_bucket_arns
+    resources               = count.index == 0 ? (
+                              local.source_bucket_arns 
+                            ) : ( 
+                              concat(
+                                local.destination_bucket_arns[count.index], 
+                                local.destination_bucket_path_arns[count.index]
+                              )
+                            )
 
     principals {
       type                  =  "AWS"

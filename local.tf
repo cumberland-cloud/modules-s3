@@ -5,13 +5,14 @@ locals {
         "arn:aws:s3:::${var.bucket.name}",
          "arn:aws:s3:::${var.bucket.name}/*"
     ]
-    destination_bucket_arns         = concat([ 
+    destination_bucket_arns         = [ 
         for i in range(1, local.total_buckets): 
             "arn:aws:s3:::${var.bucket.name}-replica-0${i}" 
-    ],[
+    ]
+    destination_bucket_path_arns    = [
         for i in range(1, local.total_buckets): 
             "arn:aws:s3:::${var.bucket.name}-replica-0${i}/*"
-    ])
+    ]
     event_notification_id           = "${var.bucket.name}-notifications"
     event_notification_arn          = "arn:aws:sns:*:*:${local.event_notification_id}"
     # Calculations
@@ -26,7 +27,7 @@ locals {
                                         var.bucket.key
                                     )
     policy_configuration            = local.conditions.merge_policies ? (
-                                        data.aws_iam_policy_document.merged[0]
+                                        data.aws_iam_policy_document.merged
                                     ) : ( 
                                         data.aws_iam_policy_document.unmerged
                                     )

@@ -25,7 +25,7 @@ resource "aws_s3_bucket_policy" "this" {
     count                       = local.total_buckets
 
     bucket                      = aws_s3_bucket.this[count.index].id
-    policy                      = local.policy_configuration.json
+    policy                      = local.policy_configuration[count.index].json
 }
 
 resource "aws_s3_bucket_public_access_block" "this" {
