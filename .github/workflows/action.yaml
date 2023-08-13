@@ -20,4 +20,4 @@ jobs:
     if: ${{ github.event_name == 'pull_request' }}
     uses: cumberland-cloud/workflows/.github/workflows/gh-pages.yaml@master
     with:
-      TFDOCS: true
+      TF_DOCS: true

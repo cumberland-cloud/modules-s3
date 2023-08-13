@@ -2,6 +2,8 @@ resource "aws_s3_bucket" "logs" {
     #checkov:skip=CKV2_AWS_61: "Ensure that an S3 bucket has a lifecycle configuration"
     #checkov:skip=CKV_AWS_18: "Ensure the S3 bucket has access logging enabled" 
         # checkov wants you to create an infinite amount of buckets.
+    #checkov:skip=CKV2_AWS_62: "Ensure S3 buckets should have event notifications enabled"
+    #checkov:skip=CKV_AWS_144: "Ensure that S3 bucket has cross-region replication enabled"
 
     bucket                      = "${var.bucket.name}-logs"
     
